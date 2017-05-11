@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlSnapshot", "SqlSnapshot\SqlSnapshot.csproj", "{43412F4F-47C3-4168-B29B-634E3A2DF378}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snapshotter", "Snapshotter\Snapshotter.csproj", "{10C585A6-0677-4883-B224-3E698FEA1C81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snapshotter.Tests", "Snapshotter.Tests\Snapshotter.Tests.csproj", "{CBF66962-ACED-465C-9A0C-CE9ED5D69460}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{43412F4F-47C3-4168-B29B-634E3A2DF378}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43412F4F-47C3-4168-B29B-634E3A2DF378}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43412F4F-47C3-4168-B29B-634E3A2DF378}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10C585A6-0677-4883-B224-3E698FEA1C81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10C585A6-0677-4883-B224-3E698FEA1C81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10C585A6-0677-4883-B224-3E698FEA1C81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10C585A6-0677-4883-B224-3E698FEA1C81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBF66962-ACED-465C-9A0C-CE9ED5D69460}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBF66962-ACED-465C-9A0C-CE9ED5D69460}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBF66962-ACED-465C-9A0C-CE9ED5D69460}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBF66962-ACED-465C-9A0C-CE9ED5D69460}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
