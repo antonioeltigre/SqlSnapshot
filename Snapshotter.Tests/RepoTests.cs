@@ -24,7 +24,7 @@ namespace Snapshotter.Tests
         public void createsnapshot()
         {
             var database = new DatabaseInfoRepo().GetDatabases().Single(x => x.database_id == 5);
-            new DatabaseInfoRepo().CreateSnapshot(database, "simonTest2");
+            new DatabaseInfoRepo().CreateSnapshotAsync(database.database_id, database.name, "simonTest2").Start();
         }
 
         [Test]
@@ -37,15 +37,13 @@ namespace Snapshotter.Tests
         [Test]
         public void dropSnapshot()
         {
-            new DatabaseInfoRepo().DropSnapshot("TESTDB_MSH_TRUNK_simonTest2");
+            new DatabaseInfoRepo().DropSnapshotAsync("TESTDB_MSH_TRUNK_simonTest2");
         }
 
         [Test]
         public void restoreSnapshot()
         {
-            var database = new DatabaseInfoRepo().GetDatabases().Single(x => x.database_id == 5);
-            var snapshot = new DatabaseInfoRepo().GetSnapshots(5).ToList().First();
-            new DatabaseInfoRepo().RestoreSnapshot(database, snapshot);
+            new DatabaseInfoRepo().RestoreSnapshotAsync("TESTDB_MSH_TRUNK", "TESTDB_MSH_TRUNK_simonTest2");
         }
     }
 }

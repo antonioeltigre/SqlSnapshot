@@ -20,7 +20,7 @@ namespace Snapshotter.Tests
                 new File {name = "fileC", physical_name = @"c:\c.mdf"}
             };
 
-            var generatedSql = new SqlBuilder().CreateSnapshot("NewSnapshot", database, files);
+            var generatedSql = new SqlBuilder().CreateSnapshot("NewSnapshot", database.name, files);
 
             generatedSql.Should()
                 .Be(

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using Snapshotter.Database.Entities;
 using Snapshotter.Database.SQL;
 
@@ -27,10 +28,10 @@ namespace Snapshotter.Database
             }
         }
 
-        public void CreateSnapshot(Entities.Database database, string snapshotName)
+        public async Task CreateSnapshotAsync(int databaseId, string databaseName, string snapshotName)
         {
-            var files = GetDatabaseFiles(database.database_id);
-            var sql = _sqlBuilder.CreateSnapshot(snapshotName, database, files);
+            var files = GetDatabaseFiles(databaseId);
+            var sql = _sqlBuilder.CreateSnapshot(snapshotName, databaseName, files);
             
             using (var connection = new SqlConnection(ConnectionString))
             {
@@ -38,7 +39,7 @@ namespace Snapshotter.Database
                 var sqlCommand = connection.CreateCommand();
 
                 sqlCommand.CommandText = sql;
-                sqlCommand.ExecuteNonQuery();
+                await sqlCommand.ExecuteNonQueryAsync();
             }
         }
 
@@ -50,19 +51,19 @@ namespace Snapshotter.Database
             }
         }
 
-        public void RestoreSnapshot(Entities.Database database, Entities.Database snapshot)
+        public async Task RestoreSnapshotAsync(string databaseName, string snapshotName)
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
                 var sqlCommand = connection.CreateCommand();
 
-                sqlCommand.CommandText = _sqlBuilder.RestoreSnapshot(database.name, snapshot.name);
-                sqlCommand.ExecuteNonQuery();
+                sqlCommand.CommandText = _sqlBuilder.RestoreSnapshot(databaseName, snapshotName);
+                await sqlCommand.ExecuteNonQueryAsync();
             }
         }
 
-        public void DropSnapshot(string snapshotName)
+        public async Task DropSnapshotAsync(string snapshotName)
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
@@ -70,7 +71,7 @@ namespace Snapshotter.Database
                 var sqlCommand = connection.CreateCommand();
 
                 sqlCommand.CommandText = "DROP DATABASE " + snapshotName;
-                sqlCommand.ExecuteNonQuery();
+                await sqlCommand.ExecuteNonQueryAsync();
             }
         }
     }

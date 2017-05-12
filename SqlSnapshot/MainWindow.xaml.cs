@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using Snapshotter.Domain;
+using System.Windows.Input;
+using SqlSnapshot.ViewModels.MainWindow;
 
 namespace SqlSnapshot
 {
@@ -19,35 +19,63 @@ namespace SqlSnapshot
 
             this.DataContext = _viewModel;
             var snapshotter = new Snapshotter.Snapshotter();
+            _viewModel.Databases = snapshotter.GetDatabases().Select(x => new DatabaseViewModel {DatabaseDomainObject = x, Name = x.Name, Id = x.Id}).ToList();
+        }
 
-            _viewModel.Databases = snapshotter.GetDatabases().Select(x => new DatabaseViewModel {Database = x, Name = x.Name, Id = x.Id}).ToList();
-            _viewModel.Names = _viewModel.Databases.Select(x => x.Name).ToList();
+        private async void SnapshotClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (e.ClickCount != 2) return;
+
+                switch (e.ChangedButton)
+                {
+                    case MouseButton.Left:
+                        await RestoreSnapshot();
+                        break;
+                    case MouseButton.Right:
+                        await DropSnapshot();
+                        break;
+                }
+            }
+            catch (Exception exception)
+            {
+                _viewModel.Status = exception.ToString();
+            }
+        }
+
+        private async System.Threading.Tasks.Task DropSnapshot()
+        {
+            _viewModel.Status = "Deleting snapshot...";
+            await _viewModel.SelectedSnapshot.SnapshotDomainObject.DropAsync();
+            _viewModel.SelectedDatabase.RefreshSnapshots();
+            _viewModel.Status = "Snapshot deleted";
+        }
+
+        private async System.Threading.Tasks.Task RestoreSnapshot()
+        {
+            _viewModel.Status = "Restoring snapshot...";
+            await _viewModel.SelectedSnapshot.SnapshotDomainObject.RestoreAsync();
+            _viewModel.SelectedDatabase.RefreshSnapshots();
+            _viewModel.Status = "Snapshot restored";
+        }
+
+        private async void DatabaseClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (e.ClickCount != 2) return;
+
+                _viewModel.Status = "Creating snapshot...";
+                await _viewModel.SelectedDatabase.DatabaseDomainObject.CreateSnapshotAsync();
+                _viewModel.SelectedDatabase.RefreshSnapshots();
+                _viewModel.Status = "Snapshot created";
+
+            }
+            catch (Exception exception)
+            {
+                _viewModel.Status = exception.ToString();
+            }
         }
     }
-}
-
-public class MainWindowViewModel
-{
-    public List<DatabaseViewModel> Databases { get; set; }
-    public List<string> Names { get; set; }
-
-    public DatabaseViewModel SelectedDatabase { get; set; }
-
-    public SnapShotViewModel SelectedSnapshot { get; set; }
-}
-
-public class DatabaseViewModel
-{
-    public Database Database { get; set; }
-
-    public int Id { get; set; }
-
-    public string Name { get; set; }
-
-    public List<SnapShotViewModel> SnapShots => Database.GetSnapshots().Select(x => new SnapShotViewModel {Name = x.Name}).ToList();
-}
-
-public class SnapShotViewModel
-{
-    public string Name { get; set; }
 }
