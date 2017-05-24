@@ -31,6 +31,7 @@
             </ListBox>
             
             <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Path=Status}"></TextBox>
+            <TextBlock TextWrapping="Wrap">Double left click database to snapshot. Double left snapshot to restore, double right to delete</TextBlock>
 
         </StackPanel>
     </StackPanel>
