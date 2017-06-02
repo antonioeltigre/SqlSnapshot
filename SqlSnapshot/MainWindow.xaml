@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:SqlSnapshot"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <StackPanel  Orientation="Horizontal">
-        <ListBox ItemsSource="{Binding Databases}" SelectedItem="{Binding Path=SelectedDatabase, Mode=TwoWay}">
+    <DockPanel>
+        <ListBox DockPanel.Dock="Left" ItemsSource="{Binding Databases}" SelectedItem="{Binding Path=SelectedDatabase, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -16,8 +16,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-
-
+        
         <StackPanel>
             <ListBox ItemsSource="{Binding SelectedDatabase.SnapShots}"
                      SelectedItem="{Binding Path=SelectedSnapshot, Mode=TwoWay}">
@@ -29,10 +28,9 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            
+
             <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Path=Status}"></TextBox>
             <TextBlock TextWrapping="Wrap">Double left click database to snapshot. Double left snapshot to restore, double right to delete</TextBlock>
-
         </StackPanel>
-    </StackPanel>
+    </DockPanel>
 </Window>
