@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SqlSnapshot"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <DockPanel>
@@ -13,30 +12,36 @@
             <Label>Password:</Label><TextBox Text="{Binding Password}"/>
             <Button Click="RefreshClick">Refresh</Button>
         </ToolBar>
-        <ListBox DockPanel.Dock="Left" ItemsSource="{Binding Databases}" SelectedItem="{Binding Path=SelectedDatabase, Mode=TwoWay}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <TextBlock MouseDown="DatabaseClick" Text="{Binding Path=Name}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        
         <StackPanel>
-            <ListBox ItemsSource="{Binding SelectedDatabase.SnapShots}"
-                     SelectedItem="{Binding Path=SelectedSnapshot, Mode=TwoWay}">
+            <Label>Databases:</Label>
+            <ListBox DockPanel.Dock="Left" ItemsSource="{Binding Databases}" SelectedItem="{Binding Path=SelectedDatabase, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
-                            <TextBlock MouseDown="SnapshotClick" Text="{Binding Path=Name, Mode=TwoWay}" />
+                            <TextBlock MouseDown="DatabaseClick" Text="{Binding Path=Name}" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-
-            <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Path=Status}"></TextBox>
-            <TextBlock TextWrapping="Wrap">Double left click database to snapshot. Double left snapshot to restore, double right to delete</TextBlock>
         </StackPanel>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Label>Snapshots:</Label>
+                <ListBox ItemsSource="{Binding SelectedDatabase.SnapShots}"
+                         SelectedItem="{Binding Path=SelectedSnapshot, Mode=TwoWay}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock MouseDown="SnapshotClick" Text="{Binding Path=Name, Mode=TwoWay}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Label>Status:</Label>
+                <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Path=Status}"/>
+                <TextBlock TextWrapping="Wrap">Double left click database to snapshot. Double left snapshot to restore, double right to delete</TextBlock>
+            </StackPanel>
+        </ScrollViewer>
     </DockPanel>
 </Window>
