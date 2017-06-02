@@ -6,7 +6,12 @@ namespace Snapshotter
 {
     public class Snapshotter
     {
-        private readonly DatabaseInfoRepo _repo = new DatabaseInfoRepo();
+        private readonly DatabaseInfoRepo _repo;
+
+        public Snapshotter(DatabaseConnectionDetails connectionDetails)
+        {
+            _repo = new DatabaseInfoRepo(connectionDetails);
+        }
 
         public IEnumerable<Domain.Database> GetDatabases()
         {

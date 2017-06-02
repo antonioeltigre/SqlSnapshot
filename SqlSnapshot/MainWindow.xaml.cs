@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Snapshotter.Database;
 using SqlSnapshot.ViewModels.MainWindow;
 
 namespace SqlSnapshot
@@ -11,15 +13,14 @@ namespace SqlSnapshot
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly MainWindowViewModel _viewModel = new MainWindowViewModel();
+        private readonly MainWindowViewModel _viewModel;
 
         public MainWindow()
         {
             InitializeComponent();
-
+            _viewModel = new MainWindowViewModel();
             this.DataContext = _viewModel;
-            var snapshotter = new Snapshotter.Snapshotter();
-            _viewModel.Databases = snapshotter.GetDatabases().Select(x => new DatabaseViewModel {DatabaseDomainObject = x, Name = x.Name, Id = x.Id}).ToList();
+            Refresh();
         }
 
         private async void SnapshotClick(object sender, MouseButtonEventArgs e)
@@ -71,6 +72,29 @@ namespace SqlSnapshot
                 _viewModel.SelectedDatabase.RefreshSnapshots();
                 _viewModel.Status = "Snapshot created";
 
+            }
+            catch (Exception exception)
+            {
+                _viewModel.Status = exception.ToString();
+            }
+        }
+
+        private void RefreshClick(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+        }
+
+        private void Refresh()
+        {
+            try
+            {
+                _viewModel.Databases = new List<DatabaseViewModel>();
+                var snapshotter =
+                    new Snapshotter.Snapshotter(
+                        new DatabaseConnectionDetails(_viewModel.Server, _viewModel.Username, _viewModel.Password));
+                _viewModel.Databases = snapshotter.GetDatabases()
+                    .Select(x => new DatabaseViewModel {DatabaseDomainObject = x, Name = x.Name, Id = x.Id}).ToList();
+                _viewModel.Status = "Refreshed server";
             }
             catch (Exception exception)
             {

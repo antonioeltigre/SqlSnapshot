@@ -4,7 +4,7 @@ namespace Snapshotter.Database
 {
     internal class DatabaseContext : DbContext
     {
-        public DatabaseContext() : base("data source=.;user id=sa;password=Bgt67yhn;MultipleActiveResultSets=True")
+        public DatabaseContext(DatabaseConnectionDetails connectionDetails) : base(connectionDetails.ConnectionString)
         {
         }
 

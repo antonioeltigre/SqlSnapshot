@@ -7,6 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <DockPanel>
+        <ToolBar DockPanel.Dock="Top">
+            <Label>Server:</Label><TextBox Text="{Binding Server}"/>
+            <Label>Username:</Label><TextBox Text="{Binding Username}"/>
+            <Label>Password:</Label><TextBox Text="{Binding Password}"/>
+            <Button Click="RefreshClick">Refresh</Button>
+        </ToolBar>
         <ListBox DockPanel.Dock="Left" ItemsSource="{Binding Databases}" SelectedItem="{Binding Path=SelectedDatabase, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>

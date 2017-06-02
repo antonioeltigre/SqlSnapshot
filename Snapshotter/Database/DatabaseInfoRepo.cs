@@ -9,12 +9,17 @@ namespace Snapshotter.Database
 {
     internal class DatabaseInfoRepo
     {
-        private const string ConnectionString = "data source=.;user id=sa;password=Bgt67yhn;MultipleActiveResultSets=True";
+        private readonly DatabaseConnectionDetails _connectionDetails;
         private readonly SqlBuilder _sqlBuilder = new SqlBuilder();
+
+        public DatabaseInfoRepo(DatabaseConnectionDetails connectionDetails)
+        {
+            _connectionDetails = connectionDetails;
+        }
 
         public IEnumerable<Entities.Database> GetDatabases()
         {
-            using (var context = new DatabaseContext())
+            using (var context = new DatabaseContext(_connectionDetails))
             {
                 return context.Database.SqlQuery<Entities.Database>("SELECT * FROM sys.databases WHERE sys.databases.database_id > 4 AND sys.databases.source_database_id IS NULL").ToList();
             }
@@ -22,7 +27,7 @@ namespace Snapshotter.Database
 
         public IEnumerable<File> GetDatabaseFiles(int databaseId)
         {
-            using (var context = new DatabaseContext())
+            using (var context = new DatabaseContext(_connectionDetails))
             {
                 return context.Database.SqlQuery<File>("SELECT * FROM sys.master_files WHERE type_desc <> 'LOG' AND database_id = " + databaseId).ToList();
             }
@@ -33,7 +38,7 @@ namespace Snapshotter.Database
             var files = GetDatabaseFiles(databaseId);
             var sql = _sqlBuilder.CreateSnapshot(snapshotName, databaseName, files);
             
-            using (var connection = new SqlConnection(ConnectionString))
+            using (var connection = new SqlConnection(_connectionDetails.ConnectionString))
             {
                 connection.Open();
                 var sqlCommand = connection.CreateCommand();
@@ -45,7 +50,7 @@ namespace Snapshotter.Database
 
         public IEnumerable<Entities.Database> GetSnapshots(int databaseId)
         {
-            using (var context = new DatabaseContext())
+            using (var context = new DatabaseContext(_connectionDetails))
             {
                 return context.Database.SqlQuery<Entities.Database>("SELECT * FROM sys.databases WHERE sys.databases.source_database_id = " + databaseId).ToList();
             }
@@ -53,7 +58,7 @@ namespace Snapshotter.Database
 
         public async Task RestoreSnapshotAsync(string databaseName, string snapshotName)
         {
-            using (var connection = new SqlConnection(ConnectionString))
+            using (var connection = new SqlConnection(_connectionDetails.ConnectionString))
             {
                 connection.Open();
                 var sqlCommand = connection.CreateCommand();
@@ -65,7 +70,7 @@ namespace Snapshotter.Database
 
         public async Task DropSnapshotAsync(string snapshotName)
         {
-            using (var connection = new SqlConnection(ConnectionString))
+            using (var connection = new SqlConnection(_connectionDetails.ConnectionString))
             {
                 connection.Open();
                 var sqlCommand = connection.CreateCommand();
