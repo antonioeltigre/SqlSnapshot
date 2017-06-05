@@ -23,6 +23,11 @@ namespace SqlSnapshot
             Refresh();
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            Properties.Settings.Default.Save();
+        }
+
         private async void SnapshotClick(object sender, MouseButtonEventArgs e)
         {
             try
@@ -91,7 +96,7 @@ namespace SqlSnapshot
                 _viewModel.Databases = new List<DatabaseViewModel>();
                 var snapshotter =
                     new Snapshotter.Snapshotter(
-                        new DatabaseConnectionDetails(_viewModel.Server, _viewModel.Username, _viewModel.Password));
+                        new DatabaseConnectionDetails(Properties.Settings.Default.Server, Properties.Settings.Default.Username, Properties.Settings.Default.Password));
                 _viewModel.Databases = snapshotter.GetDatabases()
                     .Select(x => new DatabaseViewModel {DatabaseDomainObject = x, Name = x.Name, Id = x.Id}).ToList();
                 _viewModel.Status = "Refreshed server";

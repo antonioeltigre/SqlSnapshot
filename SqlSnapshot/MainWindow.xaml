@@ -3,13 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:properties="clr-namespace:SqlSnapshot.Properties"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <DockPanel>
         <ToolBar DockPanel.Dock="Top">
-            <Label>Server:</Label><TextBox Text="{Binding Server}"/>
-            <Label>Username:</Label><TextBox Text="{Binding Username}"/>
-            <Label>Password:</Label><TextBox Text="{Binding Password}"/>
+            <Label>Server:</Label>
+            <TextBox Text="{Binding Source={x:Static properties:Settings.Default}, Path=Default.Server}"/>
+            <Label>Username:</Label>
+            <TextBox Text="{Binding Source={x:Static properties:Settings.Default}, Path=Default.Username}"/>
+            <Label>Password:</Label>
+            <TextBox Text="{Binding Source={x:Static properties:Settings.Default}, Path=Default.Password}"/>
             <Button Click="RefreshClick">Refresh</Button>
         </ToolBar>
         <StackPanel>
