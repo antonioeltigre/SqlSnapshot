@@ -18,15 +18,14 @@
         </ToolBar>
         <StackPanel>
             <Label>Databases:</Label>
-            <ListBox DockPanel.Dock="Left" ItemsSource="{Binding Databases}" SelectedItem="{Binding Path=SelectedDatabase, Mode=TwoWay}">
+            <ListBox Name="DatabasesListBox" DockPanel.Dock="Left" ItemsSource="{Binding Databases}" SelectedItem="{Binding Path=SelectedDatabase, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
-                            <TextBlock MouseDown="DatabaseClick" Text="{Binding Path=Name}" />
-                        </StackPanel>
+                        <TextBlock MouseDown="DatabaseClick" Text="{Binding Path=Name}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <TextBlock TextWrapping="Wrap" MaxWidth="{Binding ElementName=DatabasesListBox, Path=ActualWidth}">Double click database to create snapshot</TextBlock>
         </StackPanel>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -36,15 +35,13 @@
                          SelectedItem="{Binding Path=SelectedSnapshot, Mode=TwoWay}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel>
-                                <TextBlock MouseDown="SnapshotClick" Text="{Binding Path=Name, Mode=TwoWay}" />
-                            </StackPanel>
+                            <TextBlock MouseDown="SnapshotClick" Text="{Binding Path=Name, Mode=TwoWay}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+                <TextBlock TextWrapping="Wrap">Double click to restore, double right click to delete</TextBlock>
                 <Label>Status:</Label>
                 <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Path=Status}"/>
-                <TextBlock TextWrapping="Wrap">Double left click database to snapshot. Double left snapshot to restore, double right to delete</TextBlock>
             </StackPanel>
         </ScrollViewer>
     </DockPanel>
