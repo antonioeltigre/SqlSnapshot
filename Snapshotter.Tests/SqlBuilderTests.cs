@@ -15,16 +15,16 @@ namespace Snapshotter.Tests
             var database = new Database.Entities.Database { name = "databaseName", database_id = 123};
             var files = new List<File>
             {
-                new File {name = "fileA", physical_name = @"c:\a.mdf"},
-                new File {name = "fileB", physical_name = @"c:\b.mdf"},
-                new File {name = "fileC", physical_name = @"c:\c.mdf"}
+                new File {name = "fileA", physical_name = @"c:\database\a.mdf"},
+                new File {name = "fileB", physical_name = @"c:\database\b.mdf"},
+                new File {name = "fileC", physical_name = @"c:\database\c.mdf"}
             };
 
             var generatedSql = new SqlBuilder().CreateSnapshot("NewSnapshot", database.name, files);
 
             generatedSql.Should()
                 .Be(
-                    @"CREATE DATABASE databaseName_NewSnapshot ON (name = 'fileA', FILENAME = 'c:\a_NewSnapshot.mdf'),(name = 'fileB', FILENAME = 'c:\b_NewSnapshot.mdf'),(name = 'fileC', FILENAME = 'c:\c_NewSnapshot.mdf') AS SNAPSHOT OF databaseName");
+                    @"CREATE DATABASE databaseName_NewSnapshot ON (name = 'fileA', FILENAME = 'c:\database\a_NewSnapshot.mdf'),(name = 'fileB', FILENAME = 'c:\database\b_NewSnapshot.mdf'),(name = 'fileC', FILENAME = 'c:\database\c_NewSnapshot.mdf') AS SNAPSHOT OF databaseName");
         }
 
         [Test]

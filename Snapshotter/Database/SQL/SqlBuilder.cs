@@ -15,7 +15,7 @@ namespace Snapshotter.Database.SQL
 
         private string GetSnapshotPath(File file, string snapshotName)
         {
-            return Path.GetPathRoot(file.physical_name) + Path.GetFileNameWithoutExtension(file.physical_name) + "_" + snapshotName + Path.GetExtension(file.physical_name);
+            return Path.Combine(Path.GetDirectoryName(file.physical_name) ?? string.Empty, Path.GetFileNameWithoutExtension(file.physical_name) ?? string.Empty) + "_" + snapshotName + Path.GetExtension(file.physical_name);
         }
 
         public string RestoreSnapshot(string databaseName, string snapshotName)
