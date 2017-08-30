@@ -98,6 +98,7 @@ namespace SqlSnapshot
                     new Snapshotter.Snapshotter(
                         new DatabaseConnectionDetails(Properties.Settings.Default.Server, Properties.Settings.Default.Username, Properties.Settings.Default.Password));
                 _viewModel.Databases = snapshotter.GetDatabases()
+                    .OrderBy(database => database.Name)
                     .Select(x => new DatabaseViewModel {DatabaseDomainObject = x, Name = x.Name, Id = x.Id}).ToList();
                 _viewModel.Status = "Refreshed server";
             }
