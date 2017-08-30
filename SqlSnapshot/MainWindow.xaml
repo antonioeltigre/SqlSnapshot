@@ -16,17 +16,25 @@
             <TextBox Text="{Binding Source={x:Static properties:Settings.Default}, Path=Default.Password}"/>
             <Button Click="RefreshClick">Refresh</Button>
         </ToolBar>
-        <StackPanel>
-            <Label>Databases:</Label>
-            <ListBox Name="DatabasesListBox" DockPanel.Dock="Left" ItemsSource="{Binding Databases}" SelectedItem="{Binding Path=SelectedDatabase, Mode=TwoWay}">
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            
+            <Label Grid.Row="0">Databases:</Label>
+            <ListBox Grid.Row="1" Name="DatabasesListBox" DockPanel.Dock="Left" ItemsSource="{Binding Databases}" SelectedItem="{Binding Path=SelectedDatabase, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock MouseDown="DatabaseClick" Text="{Binding Path=Name}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <TextBlock TextWrapping="Wrap" MaxWidth="{Binding ElementName=DatabasesListBox, Path=ActualWidth}">Double click database to create snapshot</TextBlock>
-        </StackPanel>
+
+            <TextBlock Grid.Row="2" TextWrapping="Wrap" MaxWidth="{Binding ElementName=DatabasesListBox, Path=ActualWidth}">Double click database to create snapshot</TextBlock>
+        </Grid>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
